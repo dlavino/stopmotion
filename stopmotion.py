@@ -161,9 +161,15 @@ while key!= ord('q'):
                 reset()
             else:
                 if (key == ord('a')):
-                    actSeqFrame -= 1
-                    actIcon -= 1
+                    if actSeqFrame > 0:
+                        actSeqFrame -= 1
+                    if actIcon == 0:
+                        actIcon = 9
+                    else:
+                        actIcon -= 1
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
+                    cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(255,255,255),3)
+                    cv2.rectangle(black,((actIcon-1)*icon_width,int(screen_height*0.9)),(icon_width + (actIcon-1)*icon_width,screen_height),(0,255,0),3)
                 else:
                     fRate()
 
