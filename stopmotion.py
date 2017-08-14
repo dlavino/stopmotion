@@ -161,11 +161,8 @@ while key!= ord('q'):
                 reset()
             else:
                 if (key == ord('a')):
-                    if actSeqFrame > 0:
+                    if (actSeqFrame > 0) and (actIcon > 0):
                         actSeqFrame -= 1
-                    if actIcon == 0:
-                        actIcon = 9
-                    else:
                         actIcon -= 1
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(255,255,255),3)
