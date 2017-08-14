@@ -1,3 +1,2 @@
 # stopmotion
 Stop Motion Python Script
-testando...
