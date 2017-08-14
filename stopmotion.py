@@ -163,7 +163,7 @@ while key!= ord('q'):
                 if (key == ord('a')):
                     actSeqFrame -= 1
                     actIcon -= 1
-                    cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),CV_FILLED)
+                    cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
                 else:
                     fRate()
 
