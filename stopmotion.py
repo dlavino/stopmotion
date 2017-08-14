@@ -160,7 +160,7 @@ while key!= ord('q'):
             if (key == ord('r')) or GPIO.input(4):
                 reset()
             else:
-                if (key == ord('a'))
+                if (key == ord('a')):
                     actSeqFrame -= 1
                     actIcon -= 1
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,255,0),3)
