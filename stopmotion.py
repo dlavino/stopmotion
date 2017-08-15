@@ -84,6 +84,7 @@ def cap():
     global ball
     global opacity
     global actSeqFrame
+    global actSeqIcon
     global seq
     opacity = 0.7
     overlay = vs.read()
