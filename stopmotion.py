@@ -86,14 +86,15 @@ def cap():
     global actSeqFrame
     global actSeqIcon
     global seq
+    global seqIcon
     opacity = 0.7
     overlay = vs.read()
     overlay = imutils.resize(overlay, height=int(screen_height*0.9))
     seq.insert(actSeqFrame,overlay)
+    icon = imutils.resize(overlay, height=int(screen_height*0.1))
+    seqIcon.insert(actSeqIcon,icon)
     actSeqFrame += 1
     actSeqIcon += 1
-    icon = imutils.resize(overlay, height=int(screen_height*0.1))
-    return icon
 
 def play():
     global key
@@ -111,7 +112,9 @@ def play():
 def reset():
     global black
     global seq
+    global seqIcon
     global actSeqFrame
+    global actSeqIcon
     global actIcon
     global opacity
     black = np.zeros((screen_height,screen_width,3), np.uint8)
@@ -151,9 +154,8 @@ while key!= ord('q'):
     if (key == ord('c')) or GPIO.input(6):
         for i in range(0,9):
             cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
-        iconBuffer = cap()
-        seqIcon.insert(actSeqIcon,iconBuffer)
-        black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = seqIcon[actSeqIcon]
+        cap()
+        black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = seqIcon[actSeqIcon-1]
         cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,255,0),3)
         actIcon += 1
         if actIcon == 9:
