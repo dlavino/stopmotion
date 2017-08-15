@@ -176,7 +176,7 @@ while key!= ord('q'):
                     if actSeqIcon > 0:
                         actSeqIcon -= 1
                         if actIcon == 0:
-                            actIcon = 9
+                            actIcon = 8
                             for i in range(0,9):
                                 black[screen_height*0.9:screen_height*0.9 + icon_height, (actIcon-i)*icon_width:(actIcon-i)*icon_width + icon_width] = seqIcon[actSeqIcon-1-i]
                         else:
