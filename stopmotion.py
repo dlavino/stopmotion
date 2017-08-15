@@ -178,7 +178,7 @@ while key!= ord('q'):
                         if actIcon == 0:
                             actIcon = 9
                             for i in range(0,9):
-                                black[screen_height*0.9:screen_height*0.9 + icon_height, (actIcon-1)*icon_width:(actIcon-1)*icon_width + icon_width] = seqIcon[actSeqIcon-i]
+                                black[screen_height*0.9:screen_height*0.9 + icon_height, (actIcon-i)*icon_width:(actIcon-i)*icon_width + icon_width] = seqIcon[actSeqIcon-1-i]
                         else:
                             actIcon -= 1
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
