@@ -30,7 +30,9 @@ opacity = 0.0
 key = 0
 actIcon = 0
 seq = []
+seqIcon = []
 actSeqFrame = 0
+actSeqIcon = 0
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 #here we use a Tkinter root just to get screen resolutions
@@ -88,6 +90,7 @@ def cap():
     overlay = imutils.resize(overlay, height=int(screen_height*0.9))
     seq.insert(actSeqFrame,overlay)
     actSeqFrame += 1
+    actSeqIcon += 1
     icon = imutils.resize(overlay, height=int(screen_height*0.1))
     return icon
 
@@ -145,7 +148,8 @@ while key!= ord('q'):
     if (key == ord('c')) or GPIO.input(6):
         for i in range(0,9):
             cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
-        black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = cap()
+        seqIcon[actSeqIcon] = cap()
+        black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = seqIcon[actSeqIcon]
         cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,255,0),3)
         actIcon += 1
         if actIcon == 9:
@@ -161,9 +165,16 @@ while key!= ord('q'):
                 reset()
             else:
                 if (key == ord('a')):
-                    if (actSeqFrame > 0) and (actIcon > 0):
+                    if actSeqFrame > 0:
                         actSeqFrame -= 1
-                        actIcon -= 1
+                    if actSeqIcon > 0:
+                        actSeqIcon -= 1
+                        if actIcon == 0:
+                            actIcon = 9
+                            for i in range(0,9):
+                                black[screen_height*0.9:screen_height*0.9 + icon_height, (actIcon-1)*icon_width:(actIcon-1)*icon_width + icon_width] = seqIcon[actSeqIcon-i]
+                        else:
+                            actIcon -= 1
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
                     cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(255,255,255),3)
                     cv2.rectangle(black,((actIcon-1)*icon_width,int(screen_height*0.9)),(icon_width + (actIcon-1)*icon_width,screen_height),(0,255,0),3)
