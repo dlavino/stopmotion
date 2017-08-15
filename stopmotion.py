@@ -21,7 +21,7 @@ GPIO.setup(26,GPIO.OUT)
 GPIO.setup(6,GPIO.IN,GPIO.PUD_DOWN) #capture
 GPIO.setup(5,GPIO.IN,GPIO.PUD_DOWN) #play
 GPIO.setup(4,GPIO.IN,GPIO.PUD_DOWN) #reset
-GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #uncapture
+GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #undo
 GPIO.output(26,GPIO.HIGH)
 
 
