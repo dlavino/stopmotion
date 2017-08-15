@@ -7,7 +7,7 @@ This project allows user to easily create stop motion animations by capturing fr
 - Infinity and Beyond...
 
 ### Cloning and Running
-To clone the code open the terminal in any folder and run:
+Clone the code opening the terminal in any folder and running:
 ```
 $ sudo git clone https://github.com/dlavino/stopmotion.git
 ```
