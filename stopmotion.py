@@ -152,7 +152,7 @@ while key!= ord('q'):
     key = cv2.waitKey(1) & 0xFF #keys are listened at this line
     
     if (key == ord('c')) or GPIO.input(6):
-        for i in range(0,9):
+        for i in range(0,8):
             cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
         cap()
         black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = seqIcon[actSeqIcon-1]
