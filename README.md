@@ -1,5 +1,5 @@
 # Stop Motion Python Script
-This project allows user to easily create stop motion animations by capturing frame-by-frame webcam video. It was developed to work with a keyboard or external buttons connected to Raspberry Pi GPIO's as command triggers. Although It's Raspberry Pi based, can be modified to work at any machine with Python terminal.
+This project allows user to easily create stop motion animations by capturing frame-by-frame webcam video. It was developed to work with a keyboard or external buttons connected to Raspberry Pi GPIO's as command triggers. Although it's Raspberry Pi based, can be modified to work at any machine with Python terminal.
 
 ### Applications
 - Education
@@ -18,7 +18,7 @@ $ sudo python stopmotion/stopmotion.py
 
 ## Software Requirements
 The script was written and tested using Raspberry Pi 3 Model B running Raspbian GNU/Linux 8 (jessie) and Python 2.7.9 (native in this version of Raspbian). Previous versions of Raspberry Pi may be subject to lack of performance.
-Due to multithreading tasks and some graphical processes the script uses some third open-source libraries which are not native at Python. The list of non-native libraries used in this version of the script is listed right below:
+Due to multithreading tasks and some graphical processes the script uses some third open-source libraries which are not native at Python. The non-native libraries used in this version of the script is listed right below:
 - [OpenCV](https://github.com/opencv/opencv)
 - [numpy](https://github.com/numpy/numpy)
 - [imutils](https://github.com/jrosebr1/imutils)
@@ -48,13 +48,14 @@ The table bellow shows all available commands, keys and GPIO's associated each s
 
 | Command | Description | Keyboard Key | GPIO pin |
 | --- | --- | --- | --- |
-| CAPTURE | Pick current frame of the video and add to the sequence | `c` | `6` |
+| CAPTURE | Pick current frame of the video and add to the sequence or back to *capture mode* when playing a sequence | `c` | `6` |
 | UNDO | Delete last frame of the sequence | `a` | `17` |
 | PLAY | Play sequence animation | `p` | `5` |
 | RESET | Delete all frames | `r` | `4` |
-| QUIT | Exit application | `q` | - |
+| INCREASE SPEED | Increase animation FPS | `m` | `-` |
+| DECREASE SPEED | Decrease animation FPS | `n` | `-` |
+| QUIT | Exit application | `q` | `-` |
 
-*CAPTURE when playing a sequence back to "capture mode."*
 
 
 
