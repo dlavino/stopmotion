@@ -21,6 +21,7 @@ GPIO.setup(26,GPIO.OUT)
 GPIO.setup(6,GPIO.IN,GPIO.PUD_DOWN) #capture
 GPIO.setup(5,GPIO.IN,GPIO.PUD_DOWN) #play
 GPIO.setup(4,GPIO.IN,GPIO.PUD_DOWN) #reset
+GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #uncapture
 GPIO.output(26,GPIO.HIGH)
 
 
@@ -108,7 +109,7 @@ def play():
                 reset()
                 return
             else:
-                if (key == ord('c')):
+                if (key == ord('c')) or GPIO.input(6):
                     return
                 else:
                     fRate()
@@ -173,7 +174,7 @@ while key!= ord('q'):
             if (key == ord('r')) or GPIO.input(4):
                 reset()
             else:
-                if (key == ord('a')):
+                if (key == ord('a')) or GPIO.input(17):
                     if actSeqFrame > 0:
                         actSeqFrame -= 1
                     if actSeqIcon > 0:
