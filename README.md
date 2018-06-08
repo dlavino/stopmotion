@@ -7,7 +7,7 @@ This project allows user to easily create stop motion animations by capturing fr
 - Infinity and Beyond...
 
 ### Executing
-Just go into *dist/* folder, download into your Raspberry Pi and execute *stopmotion* executable file.
+**Just go into *dist/* folder, download into your Raspberry Pi and execute *stopmotion* executable file.**
 
 ### Cloning and Running (source code)
 Clone the code opening the terminal in any folder and running:
