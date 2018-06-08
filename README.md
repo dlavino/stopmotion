@@ -61,7 +61,3 @@ The table bellow shows all available commands, keys and GPIO's associated each s
 
 
 
-
-
-
-
