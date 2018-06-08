@@ -1,12 +1,15 @@
 # Stop Motion Python Script
-This project allows user to easily create stop motion animations by capturing frame-by-frame webcam video. It was developed to work with a keyboard or external buttons connected to Raspberry Pi GPIO's as command triggers. Although it's Raspberry Pi based, can be modified to work at any machine with Python terminal.
+This project allows user to easily create stop motion animations by capturing frame-by-frame webcam video. It was developed to work with a keyboard or external buttons connected to Raspberry Pi GPIO's as command triggers. Although it's Raspberry Pi (Raspbian) based, can be modified to work at any machine with Python terminal.
 
 ### Applications
 - Education
 - Entertainment
 - Infinity and Beyond...
 
-### Cloning and Running
+### Executing
+Just go into *dist/* folder, download into your Raspberry Pi and execute *stopmotion* executable file.
+
+### Cloning and Running (source code)
 Clone the code opening the terminal in any folder and running:
 ```
 $ sudo git clone https://github.com/dlavino/stopmotion.git
@@ -16,7 +19,7 @@ A new directory called *stopmotion* is created, run the following command line t
 $ sudo python stopmotion/stopmotion.py
 ```
 
-## Software Requirements
+## Software Requirements (source code)
 The script was written and tested using Raspberry Pi 3 Model B running Raspbian GNU/Linux 8 (jessie) and Python 2.7.9 (native in this version of Raspbian). Previous versions of Raspberry Pi may be subject to lack of performance.
 Due to multithreading tasks and some graphical processes the script uses some third open-source libraries which are not native at Python. The non-native libraries used in this version of the script is listed right below:
 - [OpenCV](https://github.com/opencv/opencv)
@@ -55,6 +58,9 @@ The table bellow shows all available commands, keys and GPIO's associated each s
 | INCREASE SPEED | Increase animation FPS | `m` | `-` |
 | DECREASE SPEED | Decrease animation FPS | `n` | `-` |
 | QUIT | Exit application | `q` | `-` |
+
+
+
 
 
 
