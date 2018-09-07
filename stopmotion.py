@@ -12,6 +12,17 @@ from Tkinter import *
 from imutils.video import WebcamVideoStream # https://github.com/jrosebr1/imutils
 import imutils
 #from threading import Thread
+import RPi.GPIO as GPIO
+
+#initializing GPIO pins
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(26,GPIO.OUT)
+GPIO.setup(6,GPIO.IN,GPIO.PUD_DOWN) #capture
+GPIO.setup(5,GPIO.IN,GPIO.PUD_DOWN) #play
+GPIO.setup(4,GPIO.IN,GPIO.PUD_DOWN) #reset
+GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #undo
+GPIO.output(26,GPIO.HIGH)
 
 #initializing some variables
 AnimFrameRate = 20
@@ -42,6 +53,7 @@ sleep(0.5)
 print "Ajustando exposicao..." #Adjusting Exposition - Otherwise camera
 #could start darker
 sleep(0.5)
+GPIO.output(26,GPIO.LOW)
 print "Running..."
 
 try:
@@ -110,11 +122,11 @@ def play():
         black[0:vid_height, 0:vid_width] = seq[i]
         cv2.imshow('video', black)
         key = cv2.waitKey(1000/AnimFrameRate) & 0xFF
-        if (key == ord('r')) :
+        if (key == ord('r')) or GPIO.input(4):
             reset()
             return
         else:
-            if (key == ord('c')):
+            if (key == ord('c')) or GPIO.input(6):
                 return
             else:
                 fRate()
@@ -160,7 +172,7 @@ while key!= ord('q'):
 
     key = cv2.waitKey(1) & 0xFF #keys are listened at this line
     
-    if (key == ord('c')):
+    if (key == ord('c')) or GPIO.input(6):
         for i in range(0,9):
             cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
         cap()
@@ -170,16 +182,16 @@ while key!= ord('q'):
         if actIcon == 9:
             actIcon = 0
     else:
-        if (key == ord('p')):
+        if (key == ord('p')) or GPIO.input(5):
             if actSeqFrame > 0:
                 play()
             else:
                 print "Nao existem quadros para a sequencia!"
         else:
-            if (key == ord('r')):
+            if (key == ord('r')) or GPIO.input(4):
                 reset()
             else:
-                if (key == ord('a')):
+                if (key == ord('a')) or GPIO.input(17):
                     if actSeqFrame > 0:
                         actSeqFrame -= 1
                     if actSeqIcon > 0:
