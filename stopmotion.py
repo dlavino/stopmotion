@@ -12,26 +12,14 @@ from Tkinter import *
 from imutils.video import WebcamVideoStream # https://github.com/jrosebr1/imutils
 import imutils
 #from threading import Thread
-import RPi.GPIO as GPIO
-
-#initializing GPIO pins
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(26,GPIO.OUT)
-GPIO.setup(6,GPIO.IN,GPIO.PUD_DOWN) #capture
-GPIO.setup(5,GPIO.IN,GPIO.PUD_DOWN) #play
-GPIO.setup(4,GPIO.IN,GPIO.PUD_DOWN) #reset
-GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #undo
-GPIO.output(26,GPIO.HIGH)
-
 
 #initializing some variables
 AnimFrameRate = 20
 opacity = 0.0
 key = 0
-actIcon = 0
 seq = []
 seqIcon = []
+actIcon = 0
 actSeqFrame = 0
 actSeqIcon = 0
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -54,20 +42,20 @@ sleep(0.5)
 print "Ajustando exposicao..." #Adjusting Exposition - Otherwise camera
 #could start darker
 sleep(0.5)
-GPIO.output(26,GPIO.LOW)
 print "Running..."
 
 try:
-    overlay = vs.read()
-    overlay = imutils.resize(overlay, height=int(screen_height*0.1))
+    vid_height, vid_width = vs.read().shape[:2]
 except:
     print "Camera nao encontrada. Reconecte a camera e tente novamente."
     sys.exit();
-icon_height, icon_width = overlay.shape[:2]
-overlay = vs.read()
-overlay = imutils.resize(overlay, height=int(screen_height*0.9))
-vid_height, vid_width = overlay.shape[:2]
+
+icon_width = int(vid_width*screen_height*0.1/vid_height)
+icon_height = int(screen_height*0.1)
+vid_width = int(vid_width*screen_height*0.9/vid_height)
+vid_height = int(screen_height*0.9)
 black = np.zeros((screen_height,screen_width,3), np.uint8)
+overlay = np.zeros((vid_height,vid_width,3), np.uint8)
 
 #layout drawing function
 def layout():
@@ -82,37 +70,54 @@ def layout():
 #capture function
 def cap():
     global overlay
-    global ball
     global opacity
     global actSeqFrame
     global actSeqIcon
     global seq
     global seqIcon
-    opacity = 0.7
-    overlay = vs.read()
-    overlay = imutils.resize(overlay, height=int(screen_height*0.9))
-    seq.insert(actSeqFrame,overlay)
-    icon = imutils.resize(overlay, height=int(screen_height*0.1))
-    seqIcon.insert(actSeqIcon,icon)
+    opacity = 0.6
+    seq.insert(actSeqFrame,imutils.resize(vs.read(), height=int(screen_height*0.9)))
+    seqIcon.insert(actSeqIcon,imutils.resize(seq[actSeqFrame], height=int(screen_height*0.1)))
     actSeqFrame += 1
     actSeqIcon += 1
+    ovlay()
+
+def ovlay():
+	global overlay
+	global opacity
+	global actSeqFrame
+	global seq
+	overlay = np.zeros((vid_height,vid_width,3), np.uint8)
+	if (actSeqFrame == 0):
+		opacity = 0
+	if (actSeqFrame == 1):
+		overlay = seq[actSeqFrame-1]
+	if (actSeqFrame == 2):
+		cv2.addWeighted(seq[actSeqFrame-2], 0.5, seq[actSeqFrame-1], 0.5, 0, overlay)
+	if (actSeqFrame == 3):
+		cv2.addWeighted(seq[actSeqFrame-3], 0.5, seq[actSeqFrame-2], 0.5, 0, overlay)
+		cv2.addWeighted(overlay, 0.5, seq[actSeqFrame-1], 0.5, 0, overlay)
+	if (actSeqFrame >= 4):
+		cv2.addWeighted(seq[actSeqFrame-4], 0.5, seq[actSeqFrame-3], 0.5, 0, overlay)
+		cv2.addWeighted(overlay, 0.5, seq[actSeqFrame-2],0.5, 0, overlay)
+		cv2.addWeighted(overlay, 0.5, seq[actSeqFrame-1], 0.5, 0, overlay)
+
 
 def play():
     global key
     global AnimFrameRate
-    while True:
-        for i in range(0, actSeqFrame):
-            black[0:vid_height, 0:vid_width] = seq[i]
-            cv2.imshow('video', black)
-            key = cv2.waitKey(1000/AnimFrameRate) & 0xFF
-            if (key == ord('r')) or GPIO.input(4):
-                reset()
+    for i in range(0, actSeqFrame):
+        black[0:vid_height, 0:vid_width] = seq[i]
+        cv2.imshow('video', black)
+        key = cv2.waitKey(1000/AnimFrameRate) & 0xFF
+        if (key == ord('r')) :
+            reset()
+            return
+        else:
+            if (key == ord('c')):
                 return
             else:
-                if (key == ord('c')) or GPIO.input(6):
-                    return
-                else:
-                    fRate()
+                fRate()
 def reset():
     global black
     global seq
@@ -147,34 +152,34 @@ def fRate():
 layout() #starts drawing layout
 
 while key!= ord('q'):
+
     img = vs.read()
     img = imutils.resize(img, height=int(screen_height*0.9))
-    cv2.addWeighted(overlay, opacity, img, 1 - opacity, 0, img)
-    black[0:vid_height, 0:vid_width] = img
+    cv2.addWeighted(overlay, opacity, img, 1 - opacity, 0, black[0:vid_height, 0:vid_width])
     cv2.imshow('video', black)
-    
+
     key = cv2.waitKey(1) & 0xFF #keys are listened at this line
     
-    if (key == ord('c')) or GPIO.input(6):
+    if (key == ord('c')):
         for i in range(0,9):
             cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
         cap()
-        black[screen_height*0.9:screen_height*0.9 + icon_height, actIcon*icon_width:actIcon*icon_width + icon_width] = seqIcon[actSeqIcon-1]
+        black[int(screen_height*0.9):int(screen_height*0.9 + icon_height), int(actIcon*icon_width):int(actIcon*icon_width + icon_width)] = seqIcon[actSeqIcon-1]
         cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,255,0),3)
         actIcon += 1
         if actIcon == 9:
             actIcon = 0
     else:
-        if (key == ord('p')) or GPIO.input(5):
+        if (key == ord('p')):
             if actSeqFrame > 0:
                 play()
             else:
                 print "Nao existem quadros para a sequencia!"
         else:
-            if (key == ord('r')) or GPIO.input(4):
+            if (key == ord('r')):
                 reset()
             else:
-                if (key == ord('a')) or GPIO.input(17):
+                if (key == ord('a')):
                     if actSeqFrame > 0:
                         actSeqFrame -= 1
                     if actSeqIcon > 0:
@@ -185,7 +190,7 @@ while key!= ord('q'):
                             actIcon -= 1
                         if (actIcon == 0) and (actSeqIcon > 0):
                             for i in range(0,9):
-                                black[screen_height*0.9:screen_height*0.9 + icon_height, (8-i)*icon_width:(8-i)*icon_width + icon_width] = seqIcon[actSeqIcon-1-i]
+                                black[int(screen_height*0.9):int(screen_height*0.9 + icon_height), (8-i)*icon_width:(8-i)*icon_width + icon_width] = seqIcon[actSeqIcon-1-i]
                             for i in range(0,9):
                                 cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
                             cv2.rectangle(black,(8*icon_width,int(screen_height*0.9)),(icon_width + 8*icon_width,screen_height),(0,255,0),3)
@@ -193,6 +198,7 @@ while key!= ord('q'):
                             cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(0,0,0),-1)
                             cv2.rectangle(black,(actIcon*icon_width,int(screen_height*0.9)),(icon_width + actIcon*icon_width,screen_height),(255,255,255),3)
                             cv2.rectangle(black,((actIcon-1)*icon_width,int(screen_height*0.9)),(icon_width + (actIcon-1)*icon_width,screen_height),(0,255,0),3)
+                	ovlay()
                 else:
                     fRate()
 
