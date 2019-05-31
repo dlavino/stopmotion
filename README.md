@@ -55,8 +55,8 @@ The table bellow shows all available commands, keys and GPIO's associated each s
 | UNDO | Delete last frame of the sequence | `a` | `17` |
 | PLAY | Play sequence animation | `p` | `5` |
 | RESET | Delete all frames | `r` | `4` |
-| INCREASE SPEED | Increase animation FPS | `m` | `-` |
-| DECREASE SPEED | Decrease animation FPS | `n` | `-` |
+| INCREASE RATE | Increase animation FPS | `m` | `-` |
+| DECREASE RATE | Decrease animation FPS | `n` | `-` |
 | QUIT | Exit application | `q` | `-` |
 
 
