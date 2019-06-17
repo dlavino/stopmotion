@@ -25,7 +25,7 @@ GPIO.setup(17,GPIO.IN,GPIO.PUD_DOWN) #undo
 GPIO.output(26,GPIO.HIGH)
 
 #initializing some variables
-AnimFrameRate = 20
+AnimFrameRate = 10
 opacity = 0.0
 key = 0
 seq = []
@@ -75,7 +75,7 @@ def layout():
         cv2.rectangle(black,(i*icon_width,int(screen_height*0.9)),(icon_width + i*icon_width,screen_height),(255,255,255),3)
     cv2.putText(black,'Stop Motion',(int(vid_width + (screen_width - vid_width)*0.05),int((screen_width - vid_width)*0.12)), font, (screen_width - vid_width)/210.0,(0,0,255), screen_width/480,cv2.LINE_AA)
     cv2.putText(black,'MACHINE',(int(vid_width + (screen_width - vid_width)*0.05),int((screen_width - vid_width)*0.28)), font, (screen_width - vid_width)/150.0,(0,0,255),screen_width/720,cv2.LINE_AA)
-    cv2.putText(black,'Velocidade',(int(vid_width + (screen_width - vid_width)*0.1),int((screen_width - vid_width)*0.55)), font, (screen_width - vid_width)/210.0,(255,255,255), screen_width/480,cv2.LINE_AA)
+    cv2.putText(black,'Taxa:',(int(vid_width + (screen_width - vid_width)*0.1),int((screen_width - vid_width)*0.55)), font, (screen_width - vid_width)/210.0,(255,255,255), screen_width/480,cv2.LINE_AA)
     cv2.putText(black,str(AnimFrameRate),(int(vid_width + (screen_width - vid_width)*0.1),int((screen_width - vid_width)*0.7)), font, (screen_width - vid_width)/210.0,(0,255,0), screen_width/480,cv2.LINE_AA)
     cv2.putText(black,'FPS',(int(vid_width + (screen_width - vid_width)*0.3),int((screen_width - vid_width)*0.7)), font, (screen_width - vid_width)/210.0,(255,255,255), screen_width/480,cv2.LINE_AA)
 
